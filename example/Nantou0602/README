@@ -1,0 +1,8 @@
+Generating GFs is SLOW! so you may want to generate all GFs that will be used for the later purpose.
+For example, earthquakes only occurres in some area, and you are always using those same stations for inversion.......
+In this sense, pre-generate those can save you a lot of time! (Important for EEW.)
+But now in this example, I'll walk you from generate the GFs that you're focusing on and make the CMT inversion 
+
+1.First generate Green's functions(GFs) for your area
+  1.1 source location file (lon,lat,dep): TW_dense.grid
+  1.2 station file (stalon,stalat,staname): TPN_All_filt.sta
