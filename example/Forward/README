@@ -1,0 +1,46 @@
+This simple forward model will walk you through making ENZ data from different sources
+Forward model is simple. The idea is, you a source (or some sources), and you want to know what's the corresponding ENZ displacement at the stations.
+The only thing you'll need to do is to prepare the following files:
+--------------Prepare files-----------------
+1. grdfile: where are the sources? (example file [test.grd])
+   source location file in (lon,lat,depth(+))
+
+2. srcfile: at these locations, what are the sources? (example file [test.src])
+   Here, I use the SRCtype=1. This means the .src file is in (Mw,Strike,Dip,Rake) format.
+   The number of rows need to be matched the number of sources in the grdfile.
+   (*Note that you can also try the SRCtype=2, where the .src file is in (Mw,M1,M2,M3,M4,M5,M6) format.)
+
+3. stafile: where are the stations? (example file [test.sta])
+   station location file in (Stalon,Stalat,StaName)
+
+Ok, now open the Forwardtest.GPSCMT.py, set the right path, change make_GreensFcn to True, and run:
+>> python Forwardtest.GPSCMT.py
+
+This will generate files in the project_name directory.
+Go to your $project_name directory and check the *.zrt files, if there's no error, Congrats!! you are ready to go to the next step.
+If you find the output file is weird, 95% is due to your fk path! (reminder also add fk in your environment)
+For example my is: export PATH=/usr/local/fk:$PATH
+you can also test it through >>fk.pl or >>syn on Terminal
+
+
+
+Next you can convert the ZRT format to ENZ, open the Forwardtest.GPSCMT.py again, turn convert_GFs=True, and run:
+>> python Forwardtest.GPSCMT.py
+
+This will generate .npy data [or .txt] data in ENZ format under the $project_name/GFs/ directory.
+You can check the data to see if that make sense by:
+
+------------SIMPLE CHECK--------------
+import matplotlib.pyplot as plt
+import numpy as np
+
+A=np.load('./Test_forward/GFs/SRC00001_ENU.npy')
+STA=np.genfromtxt('test.sta')
+nsta=len(STA)
+E=A[:nsta] #East component
+N=A[nsta:2*nsta] #North
+Z=A[2*nsta:] #vertical
+plt.figure()
+plt.quiver(STA[:,0],STA[:,1],E,N)
+plt.show()
+--------------------------------------

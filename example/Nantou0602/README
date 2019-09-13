@@ -49,4 +49,5 @@ Done! the inversion results are saved in:
 
 
 
-4.Now you can see the inversion result:
+4.Now you can see the inversion result by :
+python plotout.py

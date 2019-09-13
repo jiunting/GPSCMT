@@ -3,20 +3,21 @@
 #########################Parameters only need to be changed here#############################
 #make forward model by fk
 #---------------------parameters for forward model---------------------------
-home='/Users/timlin/Documents/Project/GPSCMT/example/Nantou0602' #where's your working dir?
-project_name='Test1' #create a folder under working dir
+home='/Users/timlin/Documents/Project/GPSCMT/example/Forward' #where's your working dir?
+project_name='Test_forward' #create a folder under working dir
 fk_home='/Users/timlin/Documents/Project/GPSInv/code/make_GFs/fk' #where is your fk dir
-modelpath='/Users/timlin/Documents/Project/GPSCMT/example/Nantou0602/vel1D_CWB.mod' #full path of the velocity model
+modelpath='/Users/timlin/Documents/Project/GPSCMT/example/Forward/vel1D_CWB.mod' #full path of the velocity model
 
-grdfile='Nantou0602.grd' #source location file should be under "home" directory
-stafile='Nantou0602.sta' #recording stations
-srcfile=None             #source file (doesn't matter in generating GFs step)
+grdfile='test.grd' #source location file should be under "home" directory
+stafile='test.sta' #recording stations
+srcfile='test.src' #source file (doesn't matter in generating GFs step)
 
 nprocess=8    #parallel processing
-SRCtype=3 #type=1 (Mw/strike/dip/rake) or type=2 (m0/M1~M6) or type3 (generate Green's function for CMT)
-GFs_out=1 # should be 1~3. 1 for format of inversion
+SRCtype=1 #type=1 (Mw/strike/dip/rake) or type=2 (m0/M1~M6) or type3 (generate Green's function for CMT)
+GFs_out=3 # should be 1~3. 1 for format of inversion
 
 #-----------------------parameters for CMT inversion-------------------------
+'''
 data_file='/Users/timlin/Documents/Project/GPSCMT/example/Nantou0602/Coseis_0602.gam' #data path 
 name_col=9            #open your data file. at which column is your station name? 
 LL_col=[0,1]          #at which column is the station lon. and lat. ?
@@ -25,12 +26,12 @@ sENU_col=[5,6,7]      #what are the corresponding std for ENU?
 comp_INV=[0,1,2]      #component of inversion [0,1,2] for [E,N,U]. Similarly, [0,1] for just [E,N]
 scale_of_obs=0.001    #data*scale_of_obs=meter (i.e. the unit of data are in mm so it needs to multiply by 0.001 to meter)
 n_cores=2             #how many CPUs you are using? CAREFULLY USED when your GFs is HUGE! (10,000+ grid points, 500+ stations)
-
+'''
 #-----------------------Switches, whether to run--------------------------------------
-#Those True(or False) decide whether run the process
-make_GreensFcn=False      #Generate GFs?
-convert_GFs=False          #Convert ZRT to ENZ and save in npy format
-run_CMTinv=True          #Run CMT inversion
+#Those True/1 (or False/0) decide whether run the process
+make_GreensFcn=True      #Generate GFs?
+convert_GFs=True          #Convert ZRT to ENZ and save in npy format
+run_CMTinv=False          #Run CMT inversion
 
 ##################################Parameters setting END######################################
 
@@ -56,6 +57,7 @@ if convert_GFs:
     FMT=GFs_out #out
     zrt2enz.inpdir=inpdir
     zrt2enz.outdir=outdir
+    zrt2enz.SRCtype=SRCtype
     zrt2enz.FMT=FMT
     zrt2enz.run_convert()
 
