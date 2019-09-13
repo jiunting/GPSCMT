@@ -107,6 +107,9 @@ def run_FK_static(ng,evlo,evla,evdp,SRC,STA,home,project_name,fk_home,modelpath,
 #run_forward(home,project_name,fk_home,grdfile,stafile,modelpath,SRCtype,nprocess=8):
 #Main control
 def run_forward():
+    print('Running forward model...')
+    print('Home directory=',home)
+    print('Project name=',project_name)
     if not(os.path.isdir(project_name)):
         os.mkdir(project_name)
 

@@ -6,24 +6,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import glob
 import math
+import datetime
 from joblib import Parallel, delayed
 import multiprocessing
-
-#ENUdir='/Users/timlin/Documents/Project/GPSInv/GFs/TW_dense/ENU_out' #GFs for all GRD with respect to STA
-#GRDfile='/Users/timlin/Documents/Project/GPSInv/GFs/TW_dense/TW_dense.grid'
-#STAfile='/Users/timlin/Documents/Project/GPSInv/GFs/TW_dense/TPN_All_filt.sta'
-#data_file='/Users/timlin/Documents/Project/GPSInv/code/Inversion/TEST2/SRC_sum.txt'
-#data_file='/Users/timlin/Documents/Project/GPSInv/Data/Hualien201802/daily/CosDisp_Eq20180206_v3_remove_gamit.txt'
-
-#########for Coseis_xxxx.gam
-#name_col=9
-#LL_col=[0,1]
-#ENU_col=[2,3,4]
-#sENU_col=[5,6,7]
-#comp_INV=[0,1,2]
-#scale_of_obs=0.001 # data*scale_of_obs=meter
-#comp_INV=[0,1]
-##################
 
 #########for Chichi_yu
 #name_col=0
@@ -53,7 +38,6 @@ import multiprocessing
 #scale_of_obs=1000 # data*scale_of_obs=meter
 ##################
 
-
 ###########for fakeEQ###############
 #name_col=0
 #LL_col=[1,2]
@@ -62,8 +46,6 @@ import multiprocessing
 #comp_INV=[0,1,2]
 #scale_of_obs=1 
 #####################################
-
-
 
 
 
@@ -371,8 +353,8 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     #####run parallel loop END#####
     all_res=np.array([result[1] for result in results])
     min_idx=np.where(all_res==np.min(all_res))[0][0] #Check the Parallel keeps the same order!
-    print('min_idx=',min_idx)
-    print('min_results=',results[min_idx])
+    #print('min_idx=',min_idx)
+    #print('min_results=',results[min_idx])
     depth=GRD[min_idx][2]
     depth_idx=np.where(GRD[:,2]==depth)[0]
     if outfile!=False:
@@ -386,7 +368,7 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
         OUTall_res.close()
         #output dhat in meter
         results_best = Parallel(n_jobs=n_cores)(delayed(loop_inv)(ng,all_G[ng],all_idx,stacked_D,stacked_sD,True) for ng in [min_idx] )
-        print('Best solution=',results_best)
+        #print('Best solution=',results_best)
         dhat=results_best[0][3]
         nsta_used=len(all_comp) #number of stations used in the inversion, all_comp:matrix for [lon,lat,E,N,U],[lon,lat,E,N,U]
         print('#of stations=',nsta_used)
@@ -395,8 +377,7 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
             OUTdhat.write('%f %f  %f %f %f %f %f %f 0 %s\n'%(sta_used[0],sta_used[1],dhat[nn],dhat[int(nn+nsta_used)],dhat[int(nn+2*nsta_used)],0,0,0,sta_used[name_col].decode() ))
         OUTdhat.close()
         np.savetxt('checkdhat',dhat)
-        
-
+    
     sav_M=results[min_idx][2]
     M=sav_M*1e20; #this is the setting when I made GFs
     Mij=np.matrix([[M[0],M[1],M[2]], [M[1],M[3],M[4]], [M[2],M[4],M[5]]])
@@ -408,7 +389,7 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     print('Mw=%f'%(mw))
     print('SDR=',strike1,dip1,rake1,strike2,dip2,rake2)
     '''
-    #Save time, don't go to the 2nd round
+    #if you want to save time, just don't go to the 2nd round
     ###############2nd round Inversion from near-field stations only#################
     #load GFs
     #all_grids=glob.glob(ENUdir+'/'+'*ENU.npy')
@@ -416,6 +397,8 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     #sav_res=[]
     #sav_M=[]
     minres=1e20
+    print('allG=')
+    print('all_G=',all_G)
     for ng,ngrid in enumerate(all_G):
     #for ng,ngrid in enumerate([all_grids[sav_ng]]):
         #if ng%10000==0:
@@ -432,6 +415,7 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
             sta_dist_filt=1.2
         else:
             sta_dist_filt=3.0
+        print('dist=',sta_dist_filt)
         #all_idx,new_stations=find_STAidx(STA,stations,9,0,1,[GRD[sav_ng,0],GRD[sav_ng,1]],sta_dist_filt) #find the id in the G matrix, new_stations:new station file without issued stations
         all_idx,new_stations=find_STAidx(STA,stations,name_col,LL_col[0],LL_col[1],[GRD[sav_ng,0],GRD[sav_ng,1]],sta_dist_filt)
         #make the D array
@@ -467,6 +451,10 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     '''
     #write the inversion result
     OUT_inv=open(outlog,'w')
+    OUT_inv.write('Inversion made on:%s\n'%(datetime.datetime.now()))
+    OUT_inv.write('GFs from: %s\n'%(ENUdir))
+    OUT_inv.write('GRDfile from: %s\n'%(GRDfile))
+    OUT_inv.write('Data file: %s\n'%(data_file))
     OUT_inv.write('EQloc: %f %f %f\n'%(GRD[min_idx,0],GRD[min_idx,1],GRD[min_idx,2]))
     OUT_inv.write('SDR: %f %f %f %f %f %f\n'%(strike1,dip1,rake1,strike2,dip2,rake2))
     OUT_inv.write('Mw: %f\n'%(mw))
@@ -513,11 +501,18 @@ n_cores=2
 
 
 
-all_G=load_G(ENUdir,GRDfile)
-GRD=np.genfromtxt(GRDfile)
-STA=sta2dict(STAfile)
+def Main_run():
+    all_G=load_G(ENUdir,GRDfile)
+    GRD=np.genfromtxt(GRDfile)
+    STA=sta2dict(STAfile)
+    run_inv(ENUdir,all_G,GRD,STA,data_file,'GPSCMT.log',n_cores,'GPSCMT')
 
-run_inv(ENUdir,all_G,GRD,STA,data_file,'Hengchun1226.log',n_cores,'Hengchun1226')
+
+
+#all_G=load_G(ENUdir,GRDfile)
+#GRD=np.genfromtxt(GRDfile)
+#STA=sta2dict(STAfile)
+#run_inv(ENUdir,all_G,GRD,STA,data_file,'Hengchun1226.log',n_cores,'Hengchun1226')
 
 
 
@@ -534,22 +529,5 @@ run_inv(ENUdir,all_G,GRD,STA,data_file,'Hengchun1226.log',n_cores,'Hengchun1226'
 #data_file='/Users/timlin/Documents/Project/GPSInv/code/Inversion/TEST00002/SRC_sum.enu'
 #run_inv(ENUdir,all_G,GRD,STA,data_file,'test00002.log',n_cores)
 #print('Running time=',time.time()-time1)
-
-
-'''
-for n_dir in range(700):
-    data_file='/home/jtlin/Make_TWEQ/TW_fakeEQM6.0_7.3/TEST%05d/SRC_sum.enu'%(n_dir)
-    print('working on:',data_file)
-    outlog='/home/jtlin/Make_TWEQ/TW_fakeEQM6.0_7.3/TEST%05d/Inv_out.log'%(n_dir)
-    try:
-        run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores)
-    except:
-        print('something wrong:%05d'%(n_dir))
-        error_out=open('ERRINV.log','a')
-        error_out.write('something wrong for:%05d'%(n_dir))
-        error_out.close()
-        continue
-'''
-
 
 
