@@ -41,3 +41,12 @@ But now in this example, I'll walk you from generate the GFs that you're focusin
   After that, change run_CMTinv=True and run:
   >> python Nantou0602.GPSCMT.py
 
+Done! the inversion results are saved in:
+ 1.GPSCMT.log: log file that save the CMT parameters
+ 2.GPSCMT_all.res: residuals file for all the grid points
+  2.1.GPSCMT_xxx.res: residuals at the "best" depth (this is for map view plot)
+ 3.GPSCMT_dhat.dat: model vectors file
+
+
+
+4.Now you can see the inversion result:

@@ -30,9 +30,9 @@ n_cores=2             #how many CPUs you are using? CAREFULLY USED when your GFs
 
 #-----------------------Switches, whether to run--------------------------------------
 #Those True(or False) decide whether run the process
-make_GreensFcn=True      #Generate GFs?
+make_GreensFcn=False      #Generate GFs?
 convert_GFs=False          #Convert ZRT to ENZ and save in npy format
-run_CMTinv=False          #Run CMT inversion
+run_CMTinv=True          #Run CMT inversion
 
 ##################################Parameters setting END######################################
 
@@ -80,6 +80,7 @@ if run_CMTinv:
         main_inv_mpi_detailed.n_cores=n_cores
         main_inv_mpi_detailed.Main_run()
     except:
-        print('mpi not available.....please >>pip install joblib and pip install multiprocessing')
+        print('Single core not available in this version...')
+        print('please >>pip install joblib and pip install multiprocessing')
     
 
