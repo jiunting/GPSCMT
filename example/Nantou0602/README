@@ -15,7 +15,7 @@ But now in this example, I'll walk you from generate the GFs that you're focusin
   OK, now open Nantou0602.GPSCMT.py, set the right path, change make_GreensFcn to True, and run:
   >> python Nantou0602.GPSCMT.py
   Go to the ./Test1 and check the *.zrt files, if there's no error, Congrats!! you are ready to go to the next step.
-  If you find the output file is weird, 95% is due to your fk path! (reminder also add fk in your environment)
+  If you find the output file is weird, 95% is due to the fk path! (reminder also add fk in your environment)
     For example my is: export PATH=/usr/local/fk:$PATH
     you can also test it through >>fk.pl or >>syn on Terminal
 
@@ -50,4 +50,4 @@ Done! the inversion results are saved in:
 
 
 4.Now you can see the inversion result by :
-python plotout.py
+>> python plotout.py

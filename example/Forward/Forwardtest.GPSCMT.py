@@ -14,10 +14,11 @@ srcfile='test.src' #source file (doesn't matter in generating GFs step)
 
 nprocess=8    #parallel processing
 SRCtype=1 #type=1 (Mw/strike/dip/rake) or type=2 (m0/M1~M6) or type3 (generate Green's function for CMT)
-GFs_out=3 # should be 1~3. 1 for format of inversion
+GFs_out=3 # should be 1~3.  1.make .npy data, 2.make .txt data, 3.both
 
 #-----------------------parameters for CMT inversion-------------------------
 '''
+############This is for INVERSION, skip this part!!!!!!!!!!!!!!!!#################
 data_file='/Users/timlin/Documents/Project/GPSCMT/example/Nantou0602/Coseis_0602.gam' #data path 
 name_col=9            #open your data file. at which column is your station name? 
 LL_col=[0,1]          #at which column is the station lon. and lat. ?
@@ -30,7 +31,7 @@ n_cores=2             #how many CPUs you are using? CAREFULLY USED when your GFs
 #-----------------------Switches, whether to run--------------------------------------
 #Those True/1 (or False/0) decide whether run the process
 make_GreensFcn=True      #Generate GFs?
-convert_GFs=True          #Convert ZRT to ENZ and save in npy format
+convert_GFs=False          #Convert ZRT to ENZ and save in npy format
 run_CMTinv=False          #Run CMT inversion
 
 ##################################Parameters setting END######################################

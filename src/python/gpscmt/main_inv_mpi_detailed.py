@@ -484,6 +484,8 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
 #####################################
 
 
+
+##########These example variable will be changed from outside when you set the right path in the parameters control file##########
 #########for Coseis_xxxx.gam
 ENUdir='/Users/timlin/Documents/Project/GPSInv/GFs/TW_dense/ENU_out' #GFs for all GRD with respect to STA
 GRDfile='/Users/timlin/Documents/Project/GPSInv/GFs/TW_dense/TW_dense.grid'

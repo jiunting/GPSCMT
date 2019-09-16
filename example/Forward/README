@@ -18,7 +18,7 @@ Ok, now open the Forwardtest.GPSCMT.py, set the right path, change make_GreensFc
 
 This will generate files in the project_name directory.
 Go to your $project_name directory and check the *.zrt files, if there's no error, Congrats!! you are ready to go to the next step.
-If you find the output file is weird, 95% is due to your fk path! (reminder also add fk in your environment)
+If you find the output file is weird, 95% is due to the fk path! (reminder also add fk in your environment)
 For example my is: export PATH=/usr/local/fk:$PATH
 you can also test it through >>fk.pl or >>syn on Terminal
 

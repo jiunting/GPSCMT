@@ -11,7 +11,7 @@ import time
 import multiprocessing as mp
 import random
 
-#########################default parameters#############################
+###################default parameters can be changed from the parameters control file #########################
 #make forward model by fk
 home='/Users/timlin/Documents/Project/GPSInv/code/make_GFs/Demo' #working dir
 project_name='Test1' #create a folder under working dir
@@ -25,7 +25,7 @@ stafile='TPN_All_filt.sta' #recording stations
 modelpath='/Users/timlin/Documents/Project/GPSInv/GFs/TW_dense/vel1D_CWB' #full path of the velocity model
 nprocess=8
 SRCtype=3 #type=1 (Mw/strike/dip/rake) or type=2 (m0/M1~M6) or type3 (generate Green's function)
-#########################default parameters END#############################
+###########################################default parameters END##############################################
 
 
 def distaz(evlo,evla,STAs):

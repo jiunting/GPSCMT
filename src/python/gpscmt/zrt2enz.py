@@ -75,8 +75,8 @@ def run_convert():
             if SRCtype==3:
                 RdMe=open(outdir+'README_Format.txt','w')
                 RdMe.write('The file is sorted in ENU.\n 6 columns mean M1~M6, unit in meter.')
-                RdMw.write('For example\n %s\n'%('-2.626887e-10 -9.267290e-10 -9.669541e-11 -1.501915e-10 -8.642910e-11 1.737191e-10'))
-                RdMw.write('The 6 column means from the source #FILE_NAME to the n-idx station GF')
+                RdMe.write('For example\n %s\n'%('-2.626887e-10 -9.267290e-10 -9.669541e-11 -1.501915e-10 -8.642910e-11 1.737191e-10'))
+                RdMe.write('The 6 column means from the source #FILE_NAME to the n-idx station GF')
                 RdMe.close()
             elif SRCtype==1 or SRCtype==2:
                 RdMe=open(outdir+'README_Format.txt','w')
