@@ -15,6 +15,6 @@ What it can do:
         Quick centroid moment tensor inversion
             A nice parallelized CMT inversion based on your pre-generated Green's function. The code allows GFs recycle and station inconsistency, which will search the available stations in the pre-built GFs for the inversion.
         Multiple point source inversion (working...)
-    
+
     
 You can also build finite fault inversion model by the GPSCMT, but I would recommand my advisor Diego Melgar's Mudpy https://github.com/dmelgarm/MudPy which is a very neat package.
