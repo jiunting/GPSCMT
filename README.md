@@ -24,5 +24,5 @@ Add [Issues][Issue_lnk] if you have questions, ideas, or would like to contribut
 or simply email: ```jiunting AT uoregon DOT edu```
 
 [Mudpy]:https://github.com/dmelgarm/MudPy "Diego's Mudpy link"
-[Issue_lnk]:https://github.com/jiunting/MLARGE/issues/new
+[Issue_lnk]:https://github.com/jiunting/GPSCMT/issues
 [Fork_lnk]:https://guides.github.com/activities/forking/
