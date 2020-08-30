@@ -2,6 +2,7 @@
 ### The forward and inverse code for 1-D point source
 
 * Lin, J. T., Chang, W. L., Melgar, D., Thomas, A., & Chiu, C. Y. (2019). Quick determination of earthquake source parameters from GPS measurements: a study of suitability for Taiwan. Geophysical Journal International, 219(2), 1148-1162.
+
 What it can/cannot do
 ```
 -[x] Forward model-One source-to-single/many stations 
