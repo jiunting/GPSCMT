@@ -16,6 +16,10 @@ What it can/cannot do
     The code allows GFs recycle and station inconsistency, which will search the available stations in the pre-built GFs for the inversion.
 -[ ] Multiple point source inversion (In Prep)
 ```
+Example work of the ```GPSCMT```  
+![][fig1]
+![][fig2]
+
 
 
 You can also build finite fault inversion model by the GPSCMT, but I would recommand [Mudpy][Mudpy] which is a well-written package.
@@ -26,3 +30,5 @@ or simply email: ```jiunting AT uoregon DOT edu```
 [Mudpy]:https://github.com/dmelgarm/MudPy "Diego's Mudpy link"
 [Issue_lnk]:https://github.com/jiunting/GPSCMT/issues
 [Fork_lnk]:https://guides.github.com/activities/forking/
+[fig1]:./figs/GPSCMT_expfig1.png
+[fig2]:./figs/GPSCMT_expfig2.png
