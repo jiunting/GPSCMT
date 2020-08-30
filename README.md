@@ -1,8 +1,8 @@
 # GPSCMT
 ### The forward and inverse code for 1-D point source
 
-* Lin, J. T., Chang, W. L., Melgar, D., Thomas, A., & Chiu, C. Y. (2019). Quick determination of earthquake source parameters from GPS measurements: a study of suitability for Taiwan. Geophysical Journal International, 219(2), 1148-1162.
-
+* Lin, J. T., Chang, W. L., Melgar, D., Thomas, A., & Chiu, C. Y. (2019). Quick determination of earthquake source parameters from GPS measurements: a study of suitability for Taiwan. Geophysical Journal International, 219(2), 1148-1162.  
+****
 What it can/cannot do
 ```
 -[x] Forward model-One source-to-single/many stations 
@@ -16,7 +16,36 @@ What it can/cannot do
     The code allows GFs recycle and station inconsistency, which will search the available stations in the pre-built GFs for the inversion.
 -[ ] Multiple point source inversion (In Prep)
 ```
-Example work of the ```GPSCMT```  
+****
+## 1. Installation
+#### cd to the place where you want to put the source code  
+```console
+cd Your_Local_Path  
+git clone https://github.com/jiunting/GPSCMT.git
+```
+#### Add M-LARGE to PYTHONPATH
+
+> Go to your environval variable file (.base_profile or .bashrc)  
+```console
+vi ~/.bashrc  
+```
+> or  
+```console
+vi ~/.bash_profile      
+```
+> and add the following line in the file
+
+```bash
+#set MLARGE
+export PYTHONPATH=$PYTHONPATH:YOUR_PATH_MARGE/GPSCMT/src/python
+```    
+
+****
+## 2. Forward & Inversion
+#### Example code for forward calculation is provided in ```GPSCMT/example/Forward/Forwardtest.GPSCMT.py``` 
+#### Example code for forward calculation is provided in ```GPSCMT/example/Forward/Nantou0602/Nantou0602.GPSCMT.py```
+
+>Example work of the ```GPSCMT```  
 ![][fig1]
 ![][fig2]
 
