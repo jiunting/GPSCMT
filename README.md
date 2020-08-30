@@ -42,8 +42,10 @@ export PYTHONPATH=$PYTHONPATH:YOUR_PATH_MARGE/GPSCMT/src/python
 
 ****
 ## 2. Forward & Inversion
-#### Example code for forward calculation is provided in ```GPSCMT/example/Forward/Forwardtest.GPSCMT.py``` 
-#### Example code for forward calculation is provided in ```GPSCMT/example/Forward/Nantou0602/Nantou0602.GPSCMT.py```
+#### Example code for forward calculation is provided in:  
+```GPSCMT/example/Forward/Forwardtest.GPSCMT.py``` 
+#### Example code for forward calculation is provided in:  
+```GPSCMT/example/Forward/Nantou0602/Nantou0602.GPSCMT.py```
 
 >Example work of the ```GPSCMT```  
 ![][fig1]
