@@ -41,6 +41,12 @@ vi ~/.bash_profile
 export PYTHONPATH=$PYTHONPATH:YOUR_PATH_MARGE/GPSCMT/src/python
 ```    
 
+#### Add fk to env
+```bash
+#fk package
+export PATH=/usr/local/fk:$PATH
+```   
+
 ****
 ## 2. Forward & Inversion
 #### Example code for forward calculation is provided in:  
