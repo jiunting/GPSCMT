@@ -46,6 +46,8 @@ export PYTHONPATH=$PYTHONPATH:YOUR_PATH_MARGE/GPSCMT/src/python
 #fk package
 export PATH=/usr/local/fk:$PATH
 ```   
+> Note that the fk.pl calls fk defined by environtal variable, make sure fk work in any path
+
 
 ****
 ## 2. Forward & Inversion
