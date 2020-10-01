@@ -6,9 +6,9 @@
 ****
 What it can/cannot do
 ```
--[x] Forward model-One source-to-single/many stations 
-    e.g. You have a point source, what are the surface displacements look like?
--[x] Many different sources-to-single/many stations
+-[x] Forward model: One source to single/many stations 
+    e.g. You have a point source, what is the surface displacement looks like?
+-[x] Forward model: Many sources to single/many stations
     e.g. You have many sources, what are the corresponding surface displacements?
 -[x] Generate Green's function (Strike/Dip slip or moment tensors)
 -[x] Multiple point source model
