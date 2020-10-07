@@ -28,9 +28,9 @@ n_cores=2             #how many CPUs you are using? CAREFULLY USED when your GFs
 
 #-----------------------Switches, whether to run--------------------------------------
 #Those True(or False) decide whether run the process
-make_GreensFcn=0      #Generate GFs?
-convert_GFs=0          #Convert ZRT to ENZ and save in npy format
-run_CMTinv=1          #Run CMT inversion
+make_GreensFcn=1      #Generate GFs?
+convert_GFs=1          #Convert ZRT to ENZ and save in npy format
+run_CMTinv=0          #Run CMT inversion
 
 ##################################Parameters setting END######################################
 
@@ -62,23 +62,25 @@ if convert_GFs:
 if run_CMTinv:
     try:
         from gpscmt import main_inv_mpi_detailed
-        ENUdir=home+'/'+project_name+'/GFs' #GFs for all GRD with respect to STA(Check whether this is correct if you didn't run convert_GFs above)
-        GRDfile=home+'/'+grdfile
-        STAfile=home+'/'+stafile
-        main_inv_mpi_detailed.ENUdir=ENUdir
-        main_inv_mpi_detailed.GRDfile=GRDfile
-        main_inv_mpi_detailed.STAfile=STAfile
-        main_inv_mpi_detailed.data_file=data_file
-        main_inv_mpi_detailed.name_col=name_col
-        main_inv_mpi_detailed.LL_col=LL_col
-        main_inv_mpi_detailed.ENU_col=ENU_col
-        main_inv_mpi_detailed.sENU_col=sENU_col
-        main_inv_mpi_detailed.comp_INV=comp_INV
-        main_inv_mpi_detailed.scale_of_obs=scale_of_obs
-        main_inv_mpi_detailed.n_cores=n_cores
-        main_inv_mpi_detailed.Main_run()
     except:
         print('Single core not available in this version...')
         print('please >>pip install joblib and pip install multiprocessing')
+    
+    ENUdir=home+'/'+project_name+'/GFs' #GFs for all GRD with respect to STA(Check whether this is correct if you didn't run convert_GFs above)
+    GRDfile=home+'/'+grdfile
+    STAfile=home+'/'+stafile
+    main_inv_mpi_detailed.ENUdir=ENUdir
+    main_inv_mpi_detailed.GRDfile=GRDfile
+    main_inv_mpi_detailed.STAfile=STAfile
+    main_inv_mpi_detailed.data_file=data_file
+    main_inv_mpi_detailed.name_col=name_col
+    main_inv_mpi_detailed.LL_col=LL_col
+    main_inv_mpi_detailed.ENU_col=ENU_col
+    main_inv_mpi_detailed.sENU_col=sENU_col
+    main_inv_mpi_detailed.comp_INV=comp_INV
+    main_inv_mpi_detailed.scale_of_obs=scale_of_obs
+    main_inv_mpi_detailed.n_cores=n_cores
+    main_inv_mpi_detailed.Main_run()
+
     
 

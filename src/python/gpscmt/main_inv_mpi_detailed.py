@@ -254,7 +254,10 @@ def load_G(ENUdir,GRDfile):
     #load GFs
     #all_grids=glob.glob(ENUdir+'/'+'*ENU.npy')
     GRD=np.genfromtxt(GRDfile)
-    all_grids=[ENUdir+'/'+'SRC%05d_ENU.npy'%(i+1) for i in range(len(GRD))]
+    if GRD.ndim==1:
+        all_grids=[ENUdir+'/'+'SRC%05d_ENU.npy'%(i+1) for i in range(1)]
+    else:
+        all_grids=[ENUdir+'/'+'SRC%05d_ENU.npy'%(i+1) for i in range(len(GRD))]
     #pre-load the GFs will save time!
     all_G={}
     print('Pre-loading GFs...')
@@ -332,7 +335,10 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     if not(all_G):
         #load GFs
         #all_grids=glob.glob(ENUdir+'/'+'*ENU.npy')
-        all_grids=[ENUdir+'/'+'SRC%05d_ENU.npy'%(i+1) for i in range(len(GRD))]
+        if GRD.ndim==1:
+            all_grids=[ENUdir+'/'+'SRC%05d_ENU.npy'%(i+1) for i in range(1)]
+        else:
+            all_grids=[ENUdir+'/'+'SRC%05d_ENU.npy'%(i+1) for i in range(len(GRD))]
         #pre-load the GFs will save time!
         all_G={}
         print('Loading GFs...')
@@ -342,7 +348,10 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
         if len(all_G)==len(GRD): #quick check if the preload_G input is right
             print('Given preload G...')
         else:
-            all_grids=[ENUdir+'/'+'SRC%05d_ENU.npy'%(i+1) for i in range(len(GRD))]
+            if GRD.ndim==1:
+                all_grids=[ENUdir+'/'+'SRC%05d_ENU.npy'%(i+1) for i in range(1)]
+            else:
+                all_grids=[ENUdir+'/'+'SRC%05d_ENU.npy'%(i+1) for i in range(len(GRD))]
             #pre-load the GFs will save time!
             all_G={}
             print('Dimension incorrect: Loading GFs...')
@@ -355,28 +364,49 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     min_idx=np.where(all_res==np.min(all_res))[0][0] #Check the Parallel keeps the same order!
     #print('min_idx=',min_idx)
     #print('min_results=',results[min_idx])
-    depth=GRD[min_idx][2]
-    depth_idx=np.where(GRD[:,2]==depth)[0]
-    if outfile!=False:
-        OUTdepth_res=open(outfile+'_%f.res'%(depth),'w')
-        for nres in depth_idx:
-            OUTdepth_res.write('%f %f %f %d\n'%(GRD[nres,0],GRD[nres,1],all_res[nres],nres))
-        OUTdepth_res.close()
-        OUTall_res=open(outfile+'_all.res','w')
-        for nres in range(len(all_res)):
-            OUTall_res.write('%f %f %f %f %d\n'%(GRD[nres,0],GRD[nres,1],GRD[nres,2],all_res[nres],nres))
-        OUTall_res.close()
-        #output dhat in meter
-        results_best = Parallel(n_jobs=n_cores)(delayed(loop_inv)(ng,all_G[ng],all_idx,stacked_D,stacked_sD,True) for ng in [min_idx] )
-        #print('Best solution=',results_best)
-        dhat=results_best[0][3]
-        nsta_used=len(all_comp) #number of stations used in the inversion, all_comp:matrix for [lon,lat,E,N,U],[lon,lat,E,N,U]
-        print('#of stations=',nsta_used)
-        OUTdhat=open(outfile+'_dhat.dat','w')
-        for nn,sta_used in enumerate(new_stations):
-            OUTdhat.write('%f %f  %f %f %f %f %f %f 0 %s\n'%(sta_used[0],sta_used[1],dhat[nn],dhat[int(nn+nsta_used)],dhat[int(nn+2*nsta_used)],0,0,0,sta_used[name_col].decode() ))
-        OUTdhat.close()
-        np.savetxt('checkdhat',dhat)
+    if GRD.ndim==1:
+        depth=GRD[2]
+        if outfile!=False:
+            OUTdepth_res=open(outfile+'_%f.res'%(depth),'w')
+            OUTdepth_res.write('%f %f %f %d\n'%(GRD[0],GRD[1],all_res[0],0))
+            OUTdepth_res.close()
+            OUTall_res=open(outfile+'_all.res','w')
+            OUTall_res.write('%f %f %f %f %d\n'%(GRD[0],GRD[1],GRD[2],all_res[0],0))
+            OUTall_res.close()
+            #output dhat in meter
+            results_best = Parallel(n_jobs=n_cores)(delayed(loop_inv)(ng,all_G[ng],all_idx,stacked_D,stacked_sD,True) for ng in [0] )
+            #print('Best solution=',results_best)
+            dhat=results_best[0][3]
+            nsta_used=len(all_comp) #number of stations used in the inversion, all_comp:matrix for [lon,lat,E,N,U],[lon,lat,E,N,U]
+            print('#of stations=',nsta_used)
+            OUTdhat=open(outfile+'_dhat.dat','w')
+            for nn,sta_used in enumerate(new_stations):
+                OUTdhat.write('%f %f  %f %f %f %f %f %f 0 %s\n'%(sta_used[0],sta_used[1],dhat[nn],dhat[int(nn+nsta_used)],dhat[int(nn+2*nsta_used)],0,0,0,sta_used[name_col].decode() ))
+            OUTdhat.close()
+            np.savetxt('checkdhat',dhat)
+    else:
+        depth=GRD[min_idx][2]
+        depth_idx=np.where(GRD[:,2]==depth)[0]
+        if outfile!=False:
+            OUTdepth_res=open(outfile+'_%f.res'%(depth),'w')
+            for nres in depth_idx:
+                OUTdepth_res.write('%f %f %f %d\n'%(GRD[nres,0],GRD[nres,1],all_res[nres],nres))
+            OUTdepth_res.close()
+            OUTall_res=open(outfile+'_all.res','w')
+            for nres in range(len(all_res)):
+                OUTall_res.write('%f %f %f %f %d\n'%(GRD[nres,0],GRD[nres,1],GRD[nres,2],all_res[nres],nres))
+            OUTall_res.close()
+            #output dhat in meter
+            results_best = Parallel(n_jobs=n_cores)(delayed(loop_inv)(ng,all_G[ng],all_idx,stacked_D,stacked_sD,True) for ng in [min_idx] )
+            #print('Best solution=',results_best)
+            dhat=results_best[0][3]
+            nsta_used=len(all_comp) #number of stations used in the inversion, all_comp:matrix for [lon,lat,E,N,U],[lon,lat,E,N,U]
+            print('#of stations=',nsta_used)
+            OUTdhat=open(outfile+'_dhat.dat','w')
+            for nn,sta_used in enumerate(new_stations):
+                OUTdhat.write('%f %f  %f %f %f %f %f %f 0 %s\n'%(sta_used[0],sta_used[1],dhat[nn],dhat[int(nn+nsta_used)],dhat[int(nn+2*nsta_used)],0,0,0,sta_used[name_col].decode() ))
+            OUTdhat.close()
+            np.savetxt('checkdhat',dhat)
     
     sav_M=results[min_idx][2]
     M=sav_M*1e20; #this is the setting when I made GFs
@@ -385,7 +415,10 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     m0=(M[0]**2+M[3]**2+M[5]**2+2*M[1]**2+2*M[2]**2+2*M[4]**2)**0.5/(2**0.5);
     mw=2/3*(np.log10(m0)-16.1)
     print('----------First solution from all stations----------')
-    print('Loc=',GRD[min_idx,:])
+    if GRD.ndim==1:
+        print('Loc=',GRD[0])
+    else:
+        print('Loc=',GRD[min_idx,:])
     print('Mw=%f'%(mw))
     print('SDR=',strike1,dip1,rake1,strike2,dip2,rake2)
     '''
@@ -455,7 +488,10 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     OUT_inv.write('GFs from: %s\n'%(ENUdir))
     OUT_inv.write('GRDfile from: %s\n'%(GRDfile))
     OUT_inv.write('Data file: %s\n'%(data_file))
-    OUT_inv.write('EQloc: %f %f %f\n'%(GRD[min_idx,0],GRD[min_idx,1],GRD[min_idx,2]))
+    if GRD.ndim==1:
+        OUT_inv.write('EQloc: %f %f %f\n'%(GRD[0],GRD[1],GRD[2]))
+    else:
+        OUT_inv.write('EQloc: %f %f %f\n'%(GRD[min_idx,0],GRD[min_idx,1],GRD[min_idx,2]))
     OUT_inv.write('SDR: %f %f %f %f %f %f\n'%(strike1,dip1,rake1,strike2,dip2,rake2))
     OUT_inv.write('Mw: %f\n'%(mw))
     OUT_inv.close()
