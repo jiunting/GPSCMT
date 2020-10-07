@@ -28,13 +28,16 @@ n_cores=2             #how many CPUs you are using? CAREFULLY USED when your GFs
 
 #-----------------------Switches, whether to run--------------------------------------
 #Those True(or False) decide whether run the process
+initial=1             #initialize project and make directories?
 make_GreensFcn=1      #Generate GFs?
 convert_GFs=1          #Convert ZRT to ENZ and save in npy format
 run_CMTinv=0          #Run CMT inversion
 
 ##################################Parameters setting END######################################
 
-
+if initial:
+    from gpscmt import starter
+    starter.create_dirs(home,project_name,stafile,grdfile,srcfile,modelpath,overwrite=False)
 
 if make_GreensFcn:
     from gpscmt import make_forward  ####If this fail, check if you add python path ->  export PYTHONPATH=$PYTHONPATH:YOUR_PATH_TO_GPS_CMT/src/python in environment
@@ -67,11 +70,9 @@ if run_CMTinv:
         print('please >>pip install joblib and pip install multiprocessing')
     
     ENUdir=home+'/'+project_name+'/GFs' #GFs for all GRD with respect to STA(Check whether this is correct if you didn't run convert_GFs above)
-    GRDfile=home+'/'+grdfile
-    STAfile=home+'/'+stafile
     main_inv_mpi_detailed.ENUdir=ENUdir
-    main_inv_mpi_detailed.GRDfile=GRDfile
-    main_inv_mpi_detailed.STAfile=STAfile
+    main_inv_mpi_detailed.GRDfile=home+'/'+project_name+'/files/'+grdfile.split('/')[-1]
+    main_inv_mpi_detailed.STAfile=home+'/'+project_name+'/files/'+stafile.split('/')[-1]
     main_inv_mpi_detailed.data_file=data_file
     main_inv_mpi_detailed.name_col=name_col
     main_inv_mpi_detailed.LL_col=LL_col

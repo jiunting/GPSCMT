@@ -416,7 +416,7 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     mw=2/3*(np.log10(m0)-16.1)
     print('----------First solution from all stations----------')
     if GRD.ndim==1:
-        print('Loc=',GRD[0])
+        print('Loc=',GRD)
     else:
         print('Loc=',GRD[min_idx,:])
     print('Mw=%f'%(mw))
