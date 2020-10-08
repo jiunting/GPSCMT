@@ -298,7 +298,7 @@ def loop_inv(ng,ngrid,all_idx,stacked_D,stacked_sD,return_dhat):
     else:
         return ng,res,M
 
-def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
+def run_inv(home,project_name,ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     '''
         ENUdir: the directory of the *ENU file
         all_grids: pre-loaded G
@@ -367,10 +367,10 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     if GRD.ndim==1:
         depth=GRD[2]
         if outfile!=False:
-            OUTdepth_res=open(outfile+'_%f.res'%(depth),'w')
+            OUTdepth_res=open(home+'/'+project_name+'/'+'output/'+outfile+'_%f.res'%(depth),'w')
             OUTdepth_res.write('%f %f %f %d\n'%(GRD[0],GRD[1],all_res[0],0))
             OUTdepth_res.close()
-            OUTall_res=open(outfile+'_all.res','w')
+            OUTall_res=open(home+'/'+project_name+'/'+'output/'+outfile+'_all.res','w')
             OUTall_res.write('%f %f %f %f %d\n'%(GRD[0],GRD[1],GRD[2],all_res[0],0))
             OUTall_res.close()
             #output dhat in meter
@@ -379,7 +379,7 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
             dhat=results_best[0][3]
             nsta_used=len(all_comp) #number of stations used in the inversion, all_comp:matrix for [lon,lat,E,N,U],[lon,lat,E,N,U]
             print('#of stations=',nsta_used)
-            OUTdhat=open(outfile+'_dhat.dat','w')
+            OUTdhat=open(home+'/'+project_name+'/'+'output/'+outfile+'_dhat.dat','w')
             for nn,sta_used in enumerate(new_stations):
                 OUTdhat.write('%f %f  %f %f %f %f %f %f 0 %s\n'%(sta_used[0],sta_used[1],dhat[nn],dhat[int(nn+nsta_used)],dhat[int(nn+2*nsta_used)],0,0,0,sta_used[name_col].decode() ))
             OUTdhat.close()
@@ -388,11 +388,11 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
         depth=GRD[min_idx][2]
         depth_idx=np.where(GRD[:,2]==depth)[0]
         if outfile!=False:
-            OUTdepth_res=open(outfile+'_%f.res'%(depth),'w')
+            OUTdepth_res=open(home+'/'+project_name+'/'+'output/'+outfile+'_%f.res'%(depth),'w')
             for nres in depth_idx:
                 OUTdepth_res.write('%f %f %f %d\n'%(GRD[nres,0],GRD[nres,1],all_res[nres],nres))
             OUTdepth_res.close()
-            OUTall_res=open(outfile+'_all.res','w')
+            OUTall_res=open(home+'/'+project_name+'/'+'output/'+outfile+'_all.res','w')
             for nres in range(len(all_res)):
                 OUTall_res.write('%f %f %f %f %d\n'%(GRD[nres,0],GRD[nres,1],GRD[nres,2],all_res[nres],nres))
             OUTall_res.close()
@@ -402,7 +402,7 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
             dhat=results_best[0][3]
             nsta_used=len(all_comp) #number of stations used in the inversion, all_comp:matrix for [lon,lat,E,N,U],[lon,lat,E,N,U]
             print('#of stations=',nsta_used)
-            OUTdhat=open(outfile+'_dhat.dat','w')
+            OUTdhat=open(home+'/'+project_name+'/'+'output/'+outfile+'_dhat.dat','w')
             for nn,sta_used in enumerate(new_stations):
                 OUTdhat.write('%f %f  %f %f %f %f %f %f 0 %s\n'%(sta_used[0],sta_used[1],dhat[nn],dhat[int(nn+nsta_used)],dhat[int(nn+2*nsta_used)],0,0,0,sta_used[name_col].decode() ))
             OUTdhat.close()
@@ -483,7 +483,7 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
     print('SDR=',strike1,dip1,rake1,strike2,dip2,rake2)
     '''
     #write the inversion result
-    OUT_inv=open(outlog,'w')
+    OUT_inv=open(home+'/'+project_name+'/'+'output/'+outlog,'w')
     OUT_inv.write('Inversion made on:%s\n'%(datetime.datetime.now()))
     OUT_inv.write('GFs from: %s\n'%(ENUdir))
     OUT_inv.write('GRDfile from: %s\n'%(GRDfile))
@@ -523,6 +523,8 @@ def run_inv(ENUdir,all_G,GRD,STA,data_file,outlog,n_cores,outfile):
 
 ##########These example variable will be changed from outside when you set the right path in the parameters control file##########
 #########for Coseis_xxxx.gam
+home=''
+project_name=''
 ENUdir='/Users/timlin/Documents/Project/GPSInv/GFs/TW_dense/ENU_out' #GFs for all GRD with respect to STA
 GRDfile='/Users/timlin/Documents/Project/GPSInv/GFs/TW_dense/TW_dense.grid'
 STAfile='/Users/timlin/Documents/Project/GPSInv/GFs/TW_dense/TPN_All_filt.sta'
@@ -543,7 +545,7 @@ def Main_run():
     all_G=load_G(ENUdir,GRDfile)
     GRD=np.genfromtxt(GRDfile)
     STA=sta2dict(STAfile)
-    run_inv(ENUdir,all_G,GRD,STA,data_file,'GPSCMT.log',n_cores,'GPSCMT')
+    run_inv(home,project_name,ENUdir,all_G,GRD,STA,data_file,'GPSCMT.log',n_cores,'GPSCMT')
 
 
 

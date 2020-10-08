@@ -71,6 +71,8 @@ if run_CMTinv:
     
     ENUdir=home+'/'+project_name+'/GFs' #GFs for all GRD with respect to STA(Check whether this is correct if you didn't run convert_GFs above)
     main_inv_mpi_detailed.ENUdir=ENUdir
+    main_inv_mpi_detailed.home=home
+    main_inv_mpi_detailed.project_name=project_name
     main_inv_mpi_detailed.GRDfile=home+'/'+project_name+'/files/'+grdfile.split('/')[-1]
     main_inv_mpi_detailed.STAfile=home+'/'+project_name+'/files/'+stafile.split('/')[-1]
     main_inv_mpi_detailed.data_file=data_file
