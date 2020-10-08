@@ -24,7 +24,7 @@ What it can/cannot do
 cd Your_Local_Path  
 git clone https://github.com/jiunting/GPSCMT.git
 ```
-#### Add M-LARGE to PYTHONPATH
+#### Add GPSCMT to PYTHONPATH
 
 > Go to your environval variable file (.base_profile or .bashrc)  
 ```console
@@ -37,7 +37,7 @@ vi ~/.bash_profile
 > and add the following line in the file
 
 ```bash
-#set MLARGE
+#set GPSCMT
 export PYTHONPATH=$PYTHONPATH:YOUR_PATH_MARGE/GPSCMT/src/python
 ```    
 
